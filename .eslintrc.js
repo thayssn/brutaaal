@@ -7,6 +7,7 @@ module.exports = {
     'airbnb',
   ],
   globals: {
+    it: 'readonly',
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
@@ -21,5 +22,6 @@ module.exports = {
     'react',
   ],
   rules: {
+    "react/jsx-filename-extension": 'off'
   },
 };
