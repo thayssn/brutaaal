@@ -4,7 +4,7 @@ export const LogoWrapper = styled.div`
     max-width: 300px;
 
     @media (max-width: 768px){
-        width: 200px;
+        width: 120px;
     }
 `;
 

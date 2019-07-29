@@ -1,113 +1,40 @@
-import React, { Component } from 'react';
-import badabaconcover from '../../assets/covers/ba-da-bacon-cover.jpg';
-import vevnhaanoscover from '../../assets/covers/venha-a-nos-cover.jpg';
-import charlotebluecover from '../../assets/covers/charlote-blues-cover.jpg';
-import johnnycanivetecover from '../../assets/covers/johnny-canivete-cover.jpg';
-import badabaconlogo from '../../assets/logos/ba-da-bacon-logo.png';
-import vevnhaanoslogo from '../../assets/logos/venha-a-nos-logo.png';
-import charlotebluelogo from '../../assets/logos/charlote-blues-logo.png';
-import johnnycanivetelogo from '../../assets/logos/johnny-canivete-logo.png';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { Chapter, LogoWrapper, Logo } from './style';
 
-class Chapters extends Component {
-  state = {
-    comics: [
-      {
-        id: 1,
-        title: 'Ba-da-bacon',
-        cover: badabaconcover,
-        logo: badabaconlogo,
-        chapters: [
-          {
-            id: 1,
-            number: 1,
-            title: 'Chapter 1',
-          },
-          {
-            id: 2,
-            number: 2,
-            title: 'Chapter 1',
-          },
-        ],
-      },
-      {
-        id: 2,
-        title: 'Venha a nós o vosso reino',
-        cover: vevnhaanoscover,
-        logo: vevnhaanoslogo,
-        chapters: [
-          {
-            id: 1,
-            number: 1,
-            title: 'Chapter 1',
-          },
-          {
-            id: 2,
-            number: 2,
-            title: 'Chapter 1',
-          },
-        ],
-      },
-      {
-        id: 3,
-        title: 'Charlote Blue',
-        cover: charlotebluecover,
-        logo: charlotebluelogo,
-        chapters: [
-          {
-            id: 1,
-            number: 1,
-            title: 'Chapter 1',
-          },
-          {
-            id: 2,
-            number: 2,
-            title: 'Chapter 1',
-          },
-        ],
-      },
-      {
-        id: 4,
-        title: 'Johnny Canivete',
-        cover: johnnycanivetecover,
-        logo: johnnycanivetelogo,
-        chapters: [
-          {
-            id: 1,
-            number: 1,
-            title: 'Chapter 1',
-          },
-          {
-            id: 2,
-            number: 2,
-            title: 'Chapter 1',
-          },
-        ],
-      },
-    ],
-    currentComic: null,
-  }
+const Chapters = ({ match, allBooks }) => {
+  const [currentBook, setBook] = useState({
+    chapters: [],
+  });
 
-  componentWillMount() {
-    const { match } = this.props;
-    const { id } = match.params;
-    const { comics } = this.state;
-    const currentComic = comics.find(comic => comic.id === parseInt(id, 0));
-    this.setState({ currentComic });
-  }
+  useEffect(() => {
+    const { slug } = match.params;
+    const bookWithSlug = allBooks.find(book => book.slug === slug);
+    setBook(bookWithSlug);
+  }, [match, allBooks]);
 
-  render() {
-    const { currentComic } = this.state;
-    return (
-      <section>
-        <LogoWrapper />
-        <Logo src={currentComic.logo} />
-        <h1>{currentComic.title}</h1>
-        <Chapter />
-      </section>
-    );
-  }
-}
+  return (
+    <section>
+      <LogoWrapper>
+        <Logo src={currentBook.logo} />
+      </LogoWrapper>
+      { currentBook.chapters.map(chapter => (
+        <Link to={`/${currentBook.slug}/chapters/${chapter.id}`} key={chapter.id}>
+          <Chapter>
+            <div className="cover" background={chapter.cover} />
+            <h2 className="title">{chapter.title}</h2>
+            <div className="number">{chapter.number}</div>
+          </Chapter>
+        </Link>
+      ))}
+    </section>
+  );
+};
 
-export default Chapters;
+const mapStateToProps = state => ({
+  allBooks: state.allBooksState,
+});
+
+export default connect(mapStateToProps)(Chapters);

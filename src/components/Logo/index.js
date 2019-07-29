@@ -1,5 +1,5 @@
 import React from 'react';
-import bruttalLogo from '../../assets/logos/bruttal-logo.png';
+import bruttalLogo from '../../assets/bruttal-logo.png';
 
 import { LogoWrapper, Logo } from './style';
 

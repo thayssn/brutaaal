@@ -14,8 +14,8 @@ function App() {
       <Container>
         <Header />
         <Route exact path="/" component={Home} />
-        <Route path="/comics/:id/chapters" component={Chapters} />
-        <Route path="/reader" component={Reader} />
+        <Route exact path="/:slug/chapters" component={Chapters} />
+        <Route path="/:slug/chapters/:chapterId" component={Reader} />
         <Footer />
       </Container>
 
